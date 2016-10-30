@@ -11,7 +11,7 @@ class EntityX(ConanFile):
     def build(self):
     	cmake = CMake(self.settings)
     	args = []
-    	args += ['-DCMAKE_INSTALL_PREFIX="{}"'.format(self.package_folder)]
+    	args += ['-DCMAKE_INSTALL_PREFIX=install']
 
     	self.run('cmake {}/entityx {}'.format(
     		self.conanfile_directory, cmake.command_line
@@ -19,9 +19,8 @@ class EntityX(ConanFile):
     	self.run('cmake --build . --target install {}'.format(cmake.build_config))
 
     def package(self):
-        self.copy('*.h', dst='include', src=self.packge_folder)
-        self.copy('*.*lib', dst='lib', src=self.packge_folder)
-        self.copy('*.*a', dst='lib', src=self.packge_folder)
+        self.copy('*.h', dst='include', src='entityx/entityx')
+        self.copy('*.dylib', dst='lib', src='.')  # OSX
 
     def package_info(self):
     	pass  # Not sure what to do here
